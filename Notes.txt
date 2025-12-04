@@ -1,0 +1,247 @@
+﻿✅ Fix 1 — Use the CORRECT console
+
+You are using Package Manager Console, but your command is for dotnet CLI.
+
+❌ Wrong console:
+PM> dotnet ef migrations add InitialDatabase
+
+✔ Correct console:
+Use Developer PowerShell or Terminal, NOT Package Manager Console.
+
+In Visual Studio:
+
+View → Terminal → PowerShell or CMD
+Then run:
+
+dotnet ef migrations add InitialDatabase
+
+✅ Fix 2 — Install EF Core Tools
+
+Run this in PowerShell/Terminal:
+
+dotnet tool install --global dotnet-ef
+
+
+If already installed, update it:
+
+dotnet tool update --global dotnet-ef
+
+✅ Fix 3 — Use Package Manager Console version (if you want)
+
+If you want to use Package Manager Console, the command is different:
+
+✔ PMC version:
+
+Add-Migration InitialDatabase
+
+
+NOT dotnet ef ...
+
+And to apply migration:
+
+Update-Database
+
+⭐ Summary
+Console Type	Correct Command
+Package Manager Console	Add-Migration InitialDatabase
+Terminal / CMD / PowerShell	dotnet ef migrations add InitialDatabase
+
+
+
+===========================================================================================================================
+
+Alternative — use Visual Studio Package Manager Console (no global tool needed)
+
+If global tool install fails, you can still create and apply migrations inside Visual Studio using the Package Manager Console (PMC).
+
+In Visual Studio:
+
+Tools → NuGet Package Manager → Package Manager Console
+
+Set Default project dropdown to your EF Core project (StudentsDatabase).
+
+Then run:
+
+# add EF Core tools package to the project (if not already)
+Install-Package Microsoft.EntityFrameworkCore.Tools
+
+# create migration (PMC command)
+Add-Migration InitialDatabase
+
+# apply migration to DB
+Update-Database
+
+
+Add-Migration / Update-Database are PMC cmdlets and do not require dotnet-ef global tool.
+
+
+
+
+
+@model IEnumerable<StudentsDatabase.Entities.Student>
+
+<p><a asp-action="Add" class="btn btn-primary">Add New Student</a></p>
+
+<table id="myTable" class="table table-striped table-bordered nowrap" style="border-collapse:collapse; border-spacing:0; width:100%;">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Phone</th>
+			<th>Address</th>
+			<th width="70px">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var item in Model){
+		<tr>
+			<td>@Html.DisplayFor(m=>item.Name)</td>
+			<td>@Html.DisplayFor(m=>item.Email)</td>
+			<td>@Html.DisplayFor(m=>item.Phone)</td>
+			<td>@Html.DisplayFor(m=>item.Address)</td>
+			<td>
+				<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+				<a href="#" class="btn btn-danger" data-id="@item.Id">Delete</a>
+			</td>
+		</tr> 
+		}
+	</tbody>
+</table>
+
+<form id="delete-form" method="post" asp-action="Delete">
+	<input type="hidden" name="id" id="delete-id" />
+	@Html.AntiForgeryToken()
+</form>
+
+@section Scripts{
+	<script>
+		$(function(){
+			$('#myTable').DataTable()
+		});	
+	</script>
+}
+
+
+
+
+ ==========  Edit  ===========
+
+ @model StudentsDatabase.Models.StudentViewModel
+
+<h4>Edit StudentInfo</h4>
+<hr />
+
+<form asp-action="Edit">
+	<input asp-for="Id" type="hidden" />
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="mb-3">
+		<label asp-for="Name" class="control-label"></label>
+		<input asp-for="Name" class="form-control" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Email" class="control-label"></label>
+		<input asp-for="Email" class="form-control" />
+		<span asp-validation-for="Email" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Phone" class="control-label"></label>
+		<input asp-for="Phone" class="form-control" />
+		<span asp-validation-for="Phone" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Address" class="control-label"></label>
+		<input asp-for="Address" class="form-control" />
+		<span asp-validation-for="Address" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<input type="submit" value="Update" class="btn btn-primary" />
+	</div>
+</form>
+
+@section Scripts{
+@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+
+
+
+
+
+ ==========  Add  ===========
+
+@model StudentsDatabase.Models.StudentViewModel
+
+<h4>Create New Student</h4>
+<hr />
+
+<form asp-action="Add">
+	<div asp-validation-summary="ModelOnly" class="StudentAPI_danger"></div>
+	<div class="mb-3">
+		<label asp-for="Name" class="control-label"></label>
+		<input asp-for="Name" class="form-control" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Email" class="control-label"></label>
+		<input asp-for="Email" class="form-control" />
+		<span asp-validation-for="Email" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Phone" class="control-label"></label>
+		<input asp-for="Phone" class="form-control" />
+		<span asp-validation-for="Phone" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Address" class="control-label"></label>
+		<input asp-for="Address" class="form-control" />
+		<span asp-validation-for="Address" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<input type="submit" value="Save" class="btn btn-primary" />
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+		
+
+
+ ==========  Student/Index  ===========
+
+<p><a asp-action="Add" class="btn btn-primary">Add New Student</a></p>
+
+<table id="myTable" class="table table-striped table-bordered nowrap" style="border-collapse:collapse; border-spacing:0; width:100%;">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Phone</th>
+			<th>Address</th>
+			<th width="70px">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var item in Model){
+		<tr>
+			<td>@Html.DisplayFor(m=>item.Name)</td>
+			<td>@Html.DisplayFor(m=>item.Email)</td>
+			<td>@Html.DisplayFor(m=>item.Phone)</td>
+			<td>@Html.DisplayFor(m=>item.Address)</td>
+			<td>
+				<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+				<a href="#" class="btn btn-danger" data-id="@item.Id" onclick="confirmDelete('@item.Id')">Delete</a>
+
+				<form id="deleteForm-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:none;">
+					@Html.AntiForgeryToken()
+				</form>
+			</td>
+		</tr> 
+		}
+	</tbody>
+</table>

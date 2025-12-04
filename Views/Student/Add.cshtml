@@ -1,0 +1,125 @@
+﻿@model StudentsDatabase.Models.StudentViewModel
+
+<form asp-action="Add" class="needs-validation" novalidate>
+	<div class="card shadow-sm">
+		<div class="card-header bg-success text-white">
+			<h4 class="mb-0">
+				<i class="bi bi-person-plus-fill me-2"></i>Create New Student
+			</h4>
+		</div>
+
+		<div class="card-body p-4">
+			<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+			<div class="mb-4">
+				<label asp-for="Name" class="form-label fw-semibold">
+					<i class="bi bi-person-fill text-success me-2"></i>Full Name
+				</label>
+				<input asp-for="Name" class="form-control form-control-lg" placeholder="Enter student's full name" />
+				<span asp-validation-for="Name" class="text-danger small"></span>
+			</div>
+
+			<div class="mb-4">
+				<label asp-for="Email" class="form-label fw-semibold">
+					<i class="bi bi-envelope-fill text-success me-2"></i>Email Address
+				</label>
+				<input asp-for="Email" class="form-control form-control-lg" type="email" placeholder="student@example.com" />
+				<span asp-validation-for="Email" class="text-danger small"></span>
+			</div>
+
+			<div class="mb-4">
+				<label asp-for="Phone" class="form-label fw-semibold">
+					<i class="bi bi-telephone-fill text-success me-2"></i>Phone Number
+				</label>
+				<input asp-for="Phone" class="form-control form-control-lg" type="tel" placeholder="+8801*********" />
+				<span asp-validation-for="Phone" class="text-danger small"></span>
+			</div>
+
+			<div class="mb-4">
+				<label asp-for="Address" class="form-label fw-semibold">
+					<i class="bi bi-geo-alt-fill text-success me-2"></i>Address
+				</label>
+				<textarea asp-for="Address" class="form-control form-control-lg" rows="3" placeholder="Enter full address"></textarea>
+				<span asp-validation-for="Address" class="text-danger small"></span>
+			</div>
+		</div>
+
+		<div class="card-footer bg-light d-flex justify-content-between align-items-center p-3">
+			<a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+				<i class="bi bi-arrow-left me-2"></i>Cancel
+			</a>
+			<button type="submit" class="btn btn-success btn-lg px-5">
+				<i class="bi bi-check-circle me-2"></i>Save Student
+			</button>
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+<style>
+	.card {
+		border: none;
+		border-radius: 12px;
+		overflow: hidden;
+		max-width: 700px;
+		margin: 1rem auto;
+	}
+
+	.card-header {
+		padding: 1.5rem;
+		border-bottom: none;
+	}
+
+	.form-control, .form-select {
+		border-radius: 8px;
+		border: 2px solid #e0e0e0;
+		transition: all 0.3s ease;
+	}
+
+	.form-control:focus, .form-select:focus {
+		border-color: #198754;
+		box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.1);
+	}
+
+	.btn {
+		border-radius: 8px;
+		font-weight: 500;
+		transition: all 0.3s ease;
+	}
+
+	.btn-success {
+		background: linear-gradient(135deg, #198754 0%, #146c43 100%);
+		border: none;
+	}
+
+	.btn-success:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(25, 135, 84, 0.4);
+	}
+
+	.btn-outline-secondary:hover {
+		transform: translateY(-2px);
+	}
+
+	.form-label {
+		color: #333;
+		margin-bottom: 0.5rem;
+	}
+
+	.shadow-sm {
+		box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+	}
+
+	.alert {
+		border-radius: 8px;
+		border: none;
+	}
+</style>
+
+<!-- Bootstrap Icons (add to your layout if not already included) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
